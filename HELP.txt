@@ -1,0 +1,10 @@
+VBAEnhanced is a library that can be imported to a VBAProject simply by importing 'VBAEnhanced.txt' with the VBAEditor.
+Note that, currently, VBAEnhanced is coded to work on a 64-bit/VBA7 device.
+VBAEnhanced was also coded & debugged in Powerpoint's VBAEditor, meaning that it would work better in Powerpoint than other Office programs like Word or Excel (feel free to test it outside of Powerpoint).
+This library is currently in development and there isn't any guarantee that it will run without any errors (specially if you are using an old device).
+Feel free to develop your own version and use it for your own purposes, as VBAEnhanced was originally coined as an extension for simplyfing VBA.
+
+And no, VBAEnhanced is for Visual Basic for Applications (VBA) and not for Visual Basic (VB).
+Just open Powerpoint, Word or Excel, create a new document and hit [ALT + F11].
+
+Developed by MeteorImpaKct (on GitHub).

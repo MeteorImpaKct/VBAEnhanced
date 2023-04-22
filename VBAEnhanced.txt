@@ -1,0 +1,102 @@
+Attribute VB_Name = "vbaEnhanced"
+Option Explicit
+Public Declare PtrSafe Sub Beep Lib "kernel32" (ByVal dwFreq As Long, ByVal dwDuration As Long)
+Public Enum vbaeTimeUnit
+    vbaeMillisecond
+    vbaeSecond
+    vbaeMinute
+    vbaeHour
+End Enum
+Const vbaeFileObject As String = "vbaeFileObject"
+Const vbaeFolderObject As String = "vbaeFolderObject"
+Public Sub vbaeBeep(ByVal vbaeTimeUnit As String, ByVal vbaeFrequency As Long, ByVal vbaeDuration As Long)
+
+    Dim vbaeResult As Long
+    If vbaeTimeUnit = vbaeMillisecond Then
+        vbaeResult = vbaeDuration
+        Beep vbaeFrequency, vbaeResult
+    ElseIf vbaeTimeUnit = vbaeSecond Then
+        vbaeResult = vbaeDuration * 1000
+        Beep vbaeFrequency, vbaeResult
+    ElseIf vbaeTimeUnit = vbaeMinute Then
+        vbaeResult = vbaeDuration * 60000
+        Beep vbaeFrequency, vbaeResult
+    ElseIf vbaeTimeUnit = vbaeHour Then
+        vbaeResult = vbaeDuration * 3600000
+        Beep vbaeFrequency, vbaeResult
+    End If
+
+End Sub
+Public Sub vbaeKill(ByVal vbaePath As String)
+
+    On Error Resume Next
+    
+    Kill (vbaePath)
+    
+    On Error GoTo 0
+
+End Sub
+Public Function vbaeConfirmFile(ByVal vbaePath As String) As Boolean
+
+    Dim vbaeResult As String
+    vbaeResult = Dir(vbaePath)
+    If vbaeResult = "" Then
+        vbaeConfirmFile = False
+    Else
+        vbaeConfirmFile = True
+    End If
+
+End Function
+Public Function vbaeFilesContent(ByVal vbaePath As String, Optional ByVal vbaeIgnoreErrors As Boolean = False) As String
+    
+    If vbaeIgnoreErrors Then
+        On Error Resume Next
+    End If
+    
+    Dim vbaeFSO As Object
+    Dim vbaeFolder As Object
+    Dim vbaeFile As Object
+    Dim vbaeSubfolder As Object
+    Dim vbaeResult As String
+    
+    Set vbaeFSO = CreateObject("Scripting.FileSystemObject")
+    Set vbaeFolder = vbaeFSO.GetFolder(vbaePath)
+    
+    For Each vbaeFile In vbaeFolder.Files
+        vbaeResult = vbaeResult & vbaeFile.Name & vbCrLf
+    Next vbaeFile
+    
+    vbaeFilesContent = vbaeResult
+    
+    If vbaeIgnoreErrors Then
+        On Error GoTo 0
+    End If
+    
+End Function
+Public Function vbaeFoldersContent(ByVal vbaePath As String, Optional ByVal vbaeIgnoreErrors As Boolean = False) As String
+    
+    If vbaeIgnoreErrors Then
+        On Error Resume Next
+    End If
+    
+    Dim vbaeFSO As Object
+    Dim vbaeFolder As Object
+    Dim vbaeFile As Object
+    Dim vbaeSubfolder As Object
+    Dim vbaeResult As String
+    
+    Set vbaeFSO = CreateObject("Scripting.FileSystemObject")
+    Set vbaeFolder = vbaeFSO.GetFolder(vbaePath)
+    
+    For Each vbaeSubfolder In vbaeFolder.SubFolders
+            vbaeResult = vbaeResult & vbaeSubfolder.Name & vbCrLf
+            vbaeResult = vbaeResult & vbaeFoldersContent(vbaeSubfolder.Path)
+        Next vbaeSubfolder
+    
+    vbaeFoldersContent = vbaeResult
+    
+    If vbaeIgnoreErrors Then
+        On Error GoTo 0
+    End If
+    
+End Function
